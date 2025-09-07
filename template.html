@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="#" type="image/png">
+    <link as="style" rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/fontawesome.min.css" onload="this.rel='stylesheet'">
+    <link as="style" rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/solid.min.css" onload="this.rel='stylesheet'">
+    <title>test</title>
+
+    <style>
+      :root {
+        --font-size: 16px;
+        --line-height: 2rem;
+        --content-width: 1000px;
+        --font-family: "Arial", sans-serif;
+        --font-family-monospace: "Consolas", monospace;
+        --transition-duration: 0.5s;
+      }
+
+      :root,
+      .light {
+        --color-scheme: light;
+        --background-color: #fff;
+        --background-color-alt: #f3f5f7;
+        --font-color: #24292e;
+        --link-color: #0969da;
+      }
+
+      .dark {
+        --color-scheme: dark;
+        --background-color: #0d1117;
+        --background-color-alt: #161b22;
+        --font-color: #c9d1d9;
+        --link-color: #539bf5;
+      }
+
+      * {
+        box-sizing: border-box;
+        color-scheme: var(--color-scheme);
+      }
+
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: var(--font-family);
+        font-size: var(--font-size);
+        line-height: var(--line-height);
+        color: var(--font-color);
+        background-color: var(--background-color);
+        main {
+          max-width: var(--content-width);
+          margin: 0 auto;
+          header {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            font-size: 0.7rem;
+          }
+          article {
+            padding: 1rem;
+            min-height: calc(100vh - 8rem - 1px);
+            a { color: var(--link-color); }
+            code, pre {
+              padding: 0.25rem;
+              font-size: 0.9rem;
+              font-family: var(--font-family-monospace);
+              background-color: var(--background-color-alt);
+              border-radius: 0.25rem;
+            }
+            img {
+              width: 100%;
+              border-radius: 0.25rem;
+            }
+            pre {
+              line-height: calc(0.75 * var(--line-height));
+              overflow: auto;
+            }
+          }
+          footer {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 1rem;
+            a {
+              color: var(--font-color);
+              text-decoration: none;
+              cursor: pointer;
+            }
+            a:hover { color: var(--link-color); }
+            a.doc, a.repo, a.theme {
+              font-family: "Font Awesome 6 Free", serif;
+              font-weight: 900;
+            }
+            a.doc::before { content: "\f550"; }
+            a.repo::before { content: "\f121"; }
+            a.theme::before { content: "\f042"; }
+          }
+        }
+      }
+    </style>
+
+    <script>
+      const setTheme = (n) => {
+        localStorage.setItem("theme", n);
+        document.documentElement.className = n;
+      }
+      
+      const toggleTheme = () => {
+        localStorage.getItem("theme") === "light" ? setTheme("dark") : setTheme("light");
+      }
+      
+      if (
+        localStorage.getItem("theme") === "dark" ||
+        (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        setTheme("dark");
+      } else {
+        setTheme("light");
+      }
+    </script>
+
+  </head>
+
+  <body>
+    <main>
+      <header>%TITLE%</header>
+      <article>%ARTICLE%</article>
+      <footer>
+        <a class="doc" href="%HTTP%/" title="Table of Contents"></a>
+        <a class="repo" href="%REPO%" title="Code repo"></a>
+        <a class="theme" onclick="toggleTheme()" title="Swap theme"></a>
+      </footer>
+    </main>
+  </body>
+
+</html>
