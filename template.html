@@ -78,6 +78,32 @@
               overflow: auto;
             }
           }
+          aside {
+            padding: 0 1rem;
+            a {
+              color: var(--link-color);
+              text-decoration: none;
+            }
+            code {
+              padding: 0.25rem;
+              font-size: 0.9rem;
+              font-family: var(--font-family-monospace);
+              background-color: var(--background-color-alt);
+              border-radius: 0.25rem;
+            }
+            h1, h2, h3, h4, h5, h6 {
+              margin: 0;
+              font-size: var(--font-size);
+              font-weight: normal;
+              line-height: var(--line-height);
+            }
+            h1 { padding: 0 0 0 0rem; }
+            h2 { padding: 0 0 0 1rem; }
+            h3 { padding: 0 0 0 2rem; }
+            h4 { padding: 0 0 0 3rem; }
+            h5 { padding: 0 0 0 4rem; }
+            h6 { padding: 0 0 0 5rem; }
+          }
           footer {
             display: flex;
             justify-content: center;
@@ -126,6 +152,8 @@
   <body>
     <main>
       <header>%TITLE%</header>
+      <aside id="toc-site">%TOCSITE%</aside>
+      <aside id="toc-page">%TOCPAGE%</aside>
       <article>%ARTICLE%</article>
       <footer>
         <a class="doc" href="%HTTP%/" title="Table of Contents"></a>

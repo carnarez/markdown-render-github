@@ -21,33 +21,8 @@ jobs:
           curl --location --show-error --silent --output /usr/bin/minhtml https://github.com/wilsonzlin/minify-html/releases/download/v0.16.4/minhtml-0.16.4-x86_64-unknown-linux-gnu
           chmod +x /usr/bin/minhtml
 
-      - name: Scope the rendering
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            all:
-              - ".github/workflows/**"
-            committed:
-              - added|modified: "*.md"
-          list-files: shell
-        id: scope
-
       - name: Render Markdown content
         run: |
-          for f in $( [ ${{ steps.scope.output.all }} == "true" ] && ( $( find . -name "*.md" ) ) || ${{ steps.scope.output.committed_files }} ); do
-            echo $f
-            echo "{\"text\": $( jq --raw-input --raw-output --slurp @json $f )}" > .json
-            sed 's|%ARTICLE%|\n%ARTICLE%|g' template.html | grep --before-context 9999 '%ARTICLE%' | head --lines -1 > .html.1
-            gh api --method POST --header "Accept: text/html" --header "X-GitHub-Api-Version: 2022-11-28" /markdown --input .json > .html.2
-            sed 's|%ARTICLE%|%ARTICLE%\n|g' template.html | grep --after-context 9999 '%ARTICLE%' | tail --lines +2 > .html.3
-            cat .html.? \
-              | sed "s|%TITLE%|$( sed 's|^./||g;s|/index.md||g;s|.md||g' <<< $f )|g" \
-              | sed "s|%REPO%|${{ env.REPO }}|g" \
-              | sed "s|%HTTP%|${{ env.HTTP }}|g" \
-              > $$( sed 's|.md|.html|g' <<< $f )
-            rm $f
-          done
-
+          make render-all HTTP=${{ HTTP }} REPO=${{ env.REPO }}
           rm --force --recursive *file .github .gitignore .html.? .json template.html
-
           minhtml --keep-closing-tags --minify-css **/*.html
